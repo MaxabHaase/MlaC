@@ -2,21 +2,23 @@ from Bio.Seq import Seq
 import csv
 
 # my sequence (MlaC +/- 100bp)
-gene_seq = "TGACAATAAGAATAGTGGCGATGCGCCAGCTGCTGCGCCAGGTAATAATGAAACCACTGAACCTGTGGGTACAACGAAATAATTTCAGGAGAACCGACGCATGT" \
-           "TTAAACGTTTAATGATGGTCGCTTTGCTGGTGATTGCACCTCTGAGTGCGGCAACCGCGGCAGACCAGACCAATCCGTATAAGCTGATGGACGAGGCGGCGCAG" \
-           "AAAACGTTCGATCGCCTGAAGAATGAGCAACCGCAAATTCGGGCCAACCCGGATTATCTGCGTACCATTGTTGATCAGGAACTGCTGCCATACGTACAGGTGAA" \
-           "ATACGCCGGTGCGCTGGTGCTGGGCCAGTATTACAAGAGTGCGACCCCTGCTCAACGTGAAGCCTACTTTGCCGCTTTCCGTGAGTACCTGAAGCAGGCTTACGG" \
-           "TCAGGCGCTGGCGATGTATCACGGTCAAACCTATCAGATTGCGCCAGAACAGCCGCTGGGCGATAAAACCATTGTGCCTATTCGCGTTACCATTATTGACCCGAA" \
-           "TGGCCGTCCGCCGGTGCGTCTGGACTTCCAGTGGCGTAAAAACTCCCAGACGGGCAATTGGCAGGCTTACGACATGATTGCTGAAGGCGTCAGTATGATCACCAC" \
-           "CAAACAAAACGAGTGGGGAACGCTGCTGCGTACCAAAGGTATCGACGGCCTGACTGCGCAACTGAAATCGATTTCTCAACAGAAAATCACTCTGGAAGAGAAAAA" \
-           "ATAATGAGCGAGTCACTGAGCTGGATGCAGACGGGTGACACGCTGGCGTTATCCGGAGAGCTGGATCAGGACGTTTTGCTACCGCTTTGGGAAATGCGTGAGGA"
+gene_seq = "GCCATAGCATTTTTATCCATAAGATTAGCGGATCCTACCTGACGCTTTTTATCGCAACTCTCTACTGTTTCTCCATACCCGTTTTTTTGGGCTAGCGGCCGGC" \
+           "CTGGCCcgaagggtgaattatgtttaaacgtttaatgatggtcgctttgctggtgattgcacctctgagtgcggcaaccgcggcagaccagaccaatccgtat" \
+           "aagctgatggacgaggcggcgcagaaaacgttcgatcgcctgaagaatgagcaaccgcaaattcgggccaacccggattatctgcgtaccattgttgatcagg" \
+           "aactgctgccatacgtacaggtgaaatacgccggtgcgctggtgctgggccagtattacaagagtgcgacccctgctcaacgtgaagcctactttgccgcttt" \
+           "ccgtgagtacctgaagcaggcttacggtcaggcgctggcgatgtatcacggtcaaacctatcagattgcgccagaacagccgctgggcgataaaaccattgtg" \
+           "cctattcgcgttaccattattgacccgaatggccgtccgccggtgcgtctggacttccagtggcgtaaaaactcccagacgggcaattggcaggcttacgaca" \
+           "tgattgctgaaggcgtcagtatgatcaccaccaaacaaaacgagtggggaacgctgctgcgtaccaaaggtatcgacggcctgactgcgcaactgaaatcgat" \
+           "ttctcaacagaaaatcactctggaagagaaaaaataaGGCCGGCCTGGCCGGTACCAAATTCCAGAAAAGAGACGCTGAAAAG"
+
+gene_seq = gene_seq.upper()
 
 # insert the positions of the start and stop, make sure it is -1 the actual, since python indexes from 0 onward.
-start_codon_position = 100
-stop_codon_position = 733
+start_codon_position = 122
+stop_codon_position = 758
 
 # codon number is the length of the gene (from start to stop), divided by three, excluding the stop.
-codon_number = (733 - 100)/3
+codon_number = (758 - 122)/3
 primers_ = {}
 
 # function for going codon by codon, getting sequence -/+ 15bp upstream codon, mergeing with NNS and printing the seq
@@ -39,7 +41,7 @@ def Codon_by_codon(start, end, codon_number):
         down_ = gene_seq[(start_ + 3):start_ + 18]
         P = (up_ + 'NNS' + down_)
         P = Seq(P)
-        y, z, w, x,  = P.count('G'), P.count('C'), P.count('A'), P.count('T')
+        y, z, w, x, = P.count('G'), P.count('C'), P.count('A'), P.count('T')
         Tm = 64.9 + 41 * (1 + y + z - 16.4) / (3 + w + x + y + z)
         add_temp = 1
         if Tm <=60:
@@ -71,6 +73,11 @@ def Codon_by_codon(start, end, codon_number):
 
 
 Codon_by_codon(start_codon_position,stop_codon_position, codon_number)
-w = csv.writer(open("Primers.csv", "w"))
+w = csv.writer(open("Forward_Primers.csv", "w"))
 for key, val in primers_.items():
-    w.writerow([key, val[0], val[1], val[2]])
+    if 'F' in key:
+        w.writerow([key, val[0], val[1], val[2]])
+w = csv.writer(open("Reverse_Primers.csv", "w"))
+for key, val in primers_.items():
+    if 'R' in key:
+        w.writerow([key, val[0], val[1], val[2]])
