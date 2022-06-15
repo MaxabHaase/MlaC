@@ -4,4 +4,6 @@ Code used for mlaC saturation mutagenesis.
   Saturation Mutagenesis primer generator. 
   This is a script that will take a gene input and out put pairs of primers for creating a NNS saturated mutagenetic library of the gene.
 
-2. 
+2. uniq.py & logfitness_n.py
+  Scripts for processing data.
+  They take an input fasta file (from saturation mutageneis experiments) and out put the log10 relative fitness scores of each mutation at every amino acid position. 
