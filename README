@@ -1,3 +1,7 @@
-Saturation Mutagenesis primer generator. 
+Code used for mlaC saturation mutagenesis.
 
-This is a script that will take a gene input and out put pairs of primers for creating a NNS saturated mutagenetic library of the gene.
+1. Staturation.py 
+  Saturation Mutagenesis primer generator. 
+  This is a script that will take a gene input and out put pairs of primers for creating a NNS saturated mutagenetic library of the gene.
+
+2. 
