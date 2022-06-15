@@ -7,3 +7,19 @@ Code used for mlaC saturation mutagenesis.
 2. uniq.py & logfitness_n.py
   Scripts for processing data.
   They take an input fasta file (from saturation mutageneis experiments) and out put the log10 relative fitness scores of each mutation at every amino acid position. 
+  These python scripts can be run in shell script:
+  
+ #!/usr/bin/env bash
+  #$ -cwd
+  #$ -S /bin/bash
+
+  sample_1=$1 #path to merged fastq file from selective condition
+  sample_2=$2 #path to merged fastq file from non-selective condition
+  p3=$3 #label to indicate which "sub-library" fastq files are from
+
+  python3.8 uniq.py -s ${sample_1} -l ${p3} &
+  python3.8 uniq.py -s ${sample_2} -l ${p3}
+
+  wait
+
+  python3.8 logfitness_n.py -s1 ${sample_1} -s2 ${sample_2} -l ${p3}
